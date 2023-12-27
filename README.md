@@ -1,7 +1,7 @@
 This is the PyTorch implementation of our paper:
 **Domain Collaborative Bridging Detector For Archaeological Shipwreck**
 
-![image-20231227153442616](C:\Users\China\AppData\Roaming\Typora\typora-user-images\image-20231227153442616.png)
+
 
 train:
 
