@@ -1,0 +1,131 @@
+#_BASE_: "./Base-RCNN-C4.yaml"
+#MODEL:
+#  META_ARCHITECTURE: "DAobjTwoStagePseudoLabGeneralizedRCNN"
+#  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-101.pkl"
+#  MASK_ON: False
+#  RESNETS:
+#    DEPTH: 101
+#    OUT_FEATURES: ["res2", "res3", "res4", "res5"]
+#  BACKBONE:
+#    NAME: "build_resnet_fpn_backbone"
+#  FPN:
+#    IN_FEATURES: ["res2", "res3", "res4", "res5"]
+#  RPN:
+#    IN_FEATURES: [ "p2", "p3", "p4", "p5","p6" ]
+#  PROPOSAL_GENERATOR:
+#    NAME: "PseudoLabRPN"
+#  # RPN:
+#  #   POSITIVE_FRACTION: 0.25
+#  ROI_HEADS:
+#    NAME: "StandardROIHeadsPseudoLab"
+##    LOSS: "CrossEntropy" # variant: "CrossEntropy"
+#    LOSS: "FocalLoss" # variant: "CrossEntropy"
+#    NUM_CLASSES: 1
+##    IN_FEATURES : [ "p2", "p3", "p4", "p5" ]
+#    IN_FEATURES : [ "p2", "p3", "p4", "p5" ]
+#  ROI_BOX_HEAD:
+#    NAME: "FastRCNNConvFCHead"
+#    NUM_FC: 2
+#    POOLER_RESOLUTION: 7
+#SOLVER:
+#  LR_SCHEDULER_NAME: "WarmupTwoStageMultiStepLR"
+#  STEPS: (6000,)
+#  FACTOR_LIST: (1, 1)
+#  MAX_ITER: 2000
+#  IMG_PER_BATCH_LABEL_TRAIN: 8
+#  IMG_PER_BATCH_LABEL_COMPARE: 8
+#  IMG_PER_BATCH_UNLABEL: 8
+#  IMS_PER_BATCH: 8
+#  BASE_LR: 0.005
+#DATALOADER:
+#  SUP_PERCENT: 100.0
+#DATASETS:
+#  CROSS_DATASET: True
+##  TRAIN_LABEL: ("voc_2012_trainval",) #("voc_2012_trainval","voc_2007_trainval")
+##  COMPARE_LABEL: ("voc_2012_trainval",)
+##  TRAIN_UNLABEL: ("Clipart1k_train",)
+##  TEST: ("Clipart1k_test",)
+#  TRAIN_LABEL: ("sonar_semi_VALID",) #("voc_2012_trainval","voc_2007_trainval")
+#  COMPARE_LABEL: ("sonar_semi_VALID",)
+#  TRAIN_UNLABEL: ("cjk_semi",)
+#  TEST: ("cjk_semi",)
+#
+#SEMISUPNET:
+#  Trainer: "ateacher"
+#  BBOX_THRESHOLD: 0.8
+#  TEACHER_UPDATE_ITER: 1
+#  BURN_UP_STEP: 0
+#  EMA_KEEP_RATE: 0.9996
+#  UNSUP_LOSS_WEIGHT: 1.0
+#  SUP_LOSS_WEIGHT: 1.0
+#  DIS_LOSS_WEIGHT: 0.2 #0.1 for default，0.02 for grl,0.01 for bad result,0.5worse
+#  DIS_TYPE: "p5" #["concate","p2","multi"]
+#TEST:
+#  EVAL_PERIOD: 10
+#OUTPUT_DIR: ./output/oracle   #./output/FPN_p4p5_nogrl_0.2_no_weight_0.8thre
+
+_BASE_: "./Base-RCNN-C4.yaml"
+MODEL:
+  META_ARCHITECTURE: "DAobjTwoStagePseudoLabGeneralizedRCNN"
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-101.pkl"
+  MASK_ON: False
+  RESNETS:
+    DEPTH: 101
+    OUT_FEATURES: ["res2", "res3", "res4", "res5"]
+  BACKBONE:
+    NAME: "build_resnet_fpn_backbone"
+  FPN:
+    IN_FEATURES: ["res2", "res3", "res4", "res5"]
+  RPN:
+    IN_FEATURES: [ "p2", "p3", "p4", "p5","p6" ]
+  PROPOSAL_GENERATOR:
+    NAME: "PseudoLabRPN"
+  # RPN:
+  #   POSITIVE_FRACTION: 0.25
+  ROI_HEADS:
+    NAME: "StandardROIHeadsPseudoLab"
+#    LOSS: "CrossEntropy" # variant: "CrossEntropy"
+    LOSS: "FocalLoss" # variant: "CrossEntropy"
+    NUM_CLASSES: 10
+#    IN_FEATURES : [ "p2", "p3", "p4", "p5" ]
+    IN_FEATURES : [ "p2", "p3", "p4", "p5" ]
+  ROI_BOX_HEAD:
+    NAME: "FastRCNNConvFCHead"
+    NUM_FC: 2
+    POOLER_RESOLUTION: 7
+SOLVER:
+  LR_SCHEDULER_NAME: "WarmupTwoStageMultiStepLR"
+  STEPS: (60000, 80000, 90000, 360000)
+  FACTOR_LIST: (1, 1, 1, 1, 1)
+  MAX_ITER: 40000
+  IMG_PER_BATCH_LABEL_TRAIN: 8
+  IMG_PER_BATCH_LABEL_COMPARE: 8
+  IMG_PER_BATCH_UNLABEL: 8
+  IMS_PER_BATCH: 8
+  BASE_LR: 0.02
+DATALOADER:
+  SUP_PERCENT: 100.0
+DATASETS:
+  CROSS_DATASET: True
+#  TRAIN_LABEL: ("voc_2012_trainval",) #("voc_2012_trainval","voc_2007_trainval")
+#  COMPARE_LABEL: ("voc_2012_trainval",)
+#  TRAIN_UNLABEL: ("Clipart1k_train",)
+#  TEST: ("Clipart1k_test",)
+  TRAIN_LABEL: ("cityscapes",) #("voc_2012_trainval","voc_2007_trainval")
+  COMPARE_LABEL: ("cityscapes_cyclegan",)
+  TRAIN_UNLABEL: ("cityscapes_foggy_train",)
+  TEST: ("cityscapes_foggy_val",)
+
+SEMISUPNET:
+  Trainer: "ateacher"
+  BBOX_THRESHOLD: 0.8
+  TEACHER_UPDATE_ITER: 1
+  BURN_UP_STEP: 20000
+  EMA_KEEP_RATE: 0.9996
+  UNSUP_LOSS_WEIGHT: 0.5
+  SUP_LOSS_WEIGHT: 1.0
+  DIS_LOSS_WEIGHT: 0.2 #0.1 for default，0.02 for grl,0.01 for bad result,0.5worse
+  DIS_TYPE: "p5" #["concate","p2","multi"]
+TEST:
+  EVAL_PERIOD: 500
+OUTPUT_DIR: ./city_output/FPN_city_did

@@ -1,0 +1,44 @@
+_BASE_: "./Base-RCNN-FPN.yaml"
+MODEL:
+  META_ARCHITECTURE: "TwoStagePseudoLabGeneralizedRCNN"
+  MASK_ON: False
+  RESNETS:
+    DEPTH: 101
+  PROPOSAL_GENERATOR:
+    NAME: "PseudoLabRPN"
+  ROI_HEADS:
+    NAME: "StandardROIHeadsPseudoLab"
+    LOSS: "FocalLoss" # variant: "CrossEntropy"
+    NUM_CLASSES : 1
+SOLVER:
+  LR_SCHEDULER_NAME: "WarmupTwoStageMultiStepLR"
+  STEPS: (6000,)
+  FACTOR_LIST: (1, 1)
+  MAX_ITER: 4000
+  IMG_PER_BATCH_LABEL_TRAIN: 8
+  IMG_PER_BATCH_LABEL_COMPARE: 8
+  IMG_PER_BATCH_UNLABEL: 8
+  IMS_PER_BATCH: 8
+  BASE_LR: 0.005
+  CHECKPOINT_PERIOD: 500
+DATALOADER:
+  SUP_PERCENT: 100.0
+DATASETS:
+  CROSS_DATASET: True
+  TRAIN_LABEL: ("sonar_train",) #("voc_2012_trainval","voc_2007_trainval")
+  COMPARE_LABEL: ("sonar_compare",)
+  TRAIN_UNLABEL: ("sonar_semi",)
+  TEST: ("sonar_semi",)
+SEMISUPNET:
+  Trainer: "ateacher"
+  BBOX_THRESHOLD: 0.8
+  TEACHER_UPDATE_ITER: 1
+  BURN_UP_STEP: 2000
+  EMA_KEEP_RATE: 0.999
+  UNSUP_LOSS_WEIGHT: 0.5 #1.0 for oral
+  SUP_LOSS_WEIGHT: 1.0
+  DIS_TYPE: "res4" #["concate","p2","multi"]
+  DIS_LOSS_WEIGHT: 0.05
+TEST:
+  EVAL_PERIOD: 500
+OUTPUT_DIR: ./SSS_Q

@@ -1,0 +1,15 @@
+*.pth
+*.pkl
+*.jpg
+*.png
+*.0
+*.txt
+*.json
+*.rank1
+last_checkpoint
+config.yaml
+*.xml
+*.pdf
+detectron2/
+mmdet/
+output/
