@@ -3,6 +3,18 @@ This is the PyTorch implementation of our paper:
 
 ![image](framework.jpg)
 
+
+
+| Methods on Cityscape to Foggy Cityscape | Backbone   | density | mAP(%)     |
+| --------------------------------------- | ---------- | ------- | ---------- |
+| Adaptive Teacher(CVPR2022)              | Resnet-101 | 0.02    | 48.1       |
+| DCBD(ours)                              | Resnet-101 | 0.02    | 52.6(+4.5) |
+| Oracle                                  | Resnet-101 | 0.02    | 43.2       |
+
+
+
+
+
 train:
 
 ```
