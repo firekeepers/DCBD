@@ -1,5 +1,5 @@
 This is the PyTorch implementation of our paper:
-**Domain Collaborative Bridging Detector For Archaeological Shipwreck**
+**Unsupervised Underwater Shipwreck Detection in Side-Scan Sonar Images Based on Domain-Adaptive Techniques**
 
 ![image](framework.jpg)
 
