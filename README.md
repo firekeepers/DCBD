@@ -1,5 +1,5 @@
 This is the PyTorch implementation of our paper:
-**Unsupervised Underwater Shipwreck Detection in Side-Scan Sonar Images Based on Domain-Adaptive Techniques**
+**Unsupervised underwater shipwreck detection in side-scan sonar images based on domain-adaptive techniques**
 
 ![image](framework.jpg)
 
@@ -22,7 +22,7 @@ This is the PyTorch implementation of our paper:
 | DCBD(ours)                              | Resnet-101 | 92.16      |
 | Oracle                                  | Resnet-101 | 94.26      |
 
-
+make sure you have set your dataset in ``/home/shu3090/wcw/adapteacher/data/datasets/builtin.py``
 train:
 
 ```
@@ -56,3 +56,7 @@ python train_net.py --config ./configs/faster_rcnn_R101_cross_city_res_change.ya
 python train_net_cb.py --config ./configs/faster_RCNN_city_cb.yaml --num-gpus 2 MODEL.WEIGHTS_DP="$your weight of DRD.pth$" MODEL.WEIGHTS_DS="$your weight of DID.pth$"
 ```
 
+if you need a visualization_demo:
+```
+python visualization_demo.py --config ./configs/faster_rcnn_R101_cross_city_res_change.yaml
+```
