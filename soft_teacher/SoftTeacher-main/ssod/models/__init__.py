@@ -1,1 +1,0 @@
-from .soft_teacher import SoftTeacher
