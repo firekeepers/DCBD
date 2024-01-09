@@ -68,3 +68,5 @@ if you need a visualization demo for detection, We have implemented a simple dem
 ```
 python visualization_demo.py --config ./configs/faster_rcnn_R101_cross_city_res_change.yaml
 ```
+
+the dataset for optical to SSS task can be found at https://1drv.ms/f/s!AlSRgOVEBmUCjjeJjs9c5sFWPncZ?e=n0V0Oo
