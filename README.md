@@ -37,6 +37,12 @@ resume:
 python train.py --config ./configs/faster_rcnn_R101_cross_city_res_change.yaml --resume --num-gpus 2
 ```
 
+eval-only:
+
+```
+python train.py --config ./configs/faster_rcnn_R101_cross_city_res_change.yaml --resume --eval-only
+```
+
 test:
 
 ```
