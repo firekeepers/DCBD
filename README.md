@@ -1,7 +1,7 @@
 This is the PyTorch implementation of our paper:
 **Unsupervised underwater shipwreck detection in side-scan sonar images based on domain-adaptive techniques**
 
-![image](framework.jpg)
+![image](framework_of_DCBD.jpg)
 
 
 
